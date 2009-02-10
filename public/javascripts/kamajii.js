@@ -9,7 +9,7 @@ window.onerror = function(message, url, line) {
     environment: escape("referrer: "+document.referrer),
   }
   var i = new Image();
-  target = 'http://kamajii.local/create?'
+  target = 'http://kamajii.botandrose.com/create?'
   for(attr in exc) {
     target += 'exc['+attr+']='+exc[attr]+'&'
   }
