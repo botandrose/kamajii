@@ -1,0 +1,39 @@
+<div class="tools">
+<%= link_to_remote 'Delete', {:url => { :action => 'destroy', :id => @exc }} , :class => "util" %>
+<span class="pipe">|</span>
+<%= link_to_function "Close", "ExceptionLogger.hideDetails()", :class => "util", :title => "Shortcut: Escape key" %>
+	
+</div>
+
+<div class="date">
+	<%= @exc.created_at.to_s(:exc_full) %>
+</div>
+<h1>
+<%= @exc.exception_class %> in <%= @exc.controller_name.camelcase %>/<%= @exc.action_name %>
+</h1>
+
+<h2>Request</h2>
+
+<div class="request">
+  <%= listify(filter_parameters_in_string(h(@exc.request))) %>
+  <% if filtered_params? %>
+      <p><%= link_to_function('Reveal filtered parameters', '$$("div.request").invoke("toggle")') %></p>
+    </div>
+
+    <div class="request" style="display:none">
+      <%= listify(h(@exc.request)) %>
+      <p><%= link_to_function('Hide filtered parameters', '$$("div.request").invoke("toggle")') %></p>  
+  <% end %>
+</div>
+
+<h2>Backtrace</h2>
+
+<%= simple_format h(@exc.message) %>
+
+<div id="backtrace">
+<%=h(@exc.backtrace).gsub(/\n/,"<br />") %>
+</div>
+
+<h2>Environment</h2>
+
+<%= listify(h(@exc.environment)) %>
