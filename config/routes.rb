@@ -1,4 +1,3 @@
 ActionController::Routing::Routes.draw do |map|
-  map.connect ':controller/:action/:id', :defaults => { :controller => 'logged_exceptions' }
-  map.connect ':controller/:action/:id.:format'
+  map.connect ':action/:id', :controller => 'logged_exceptions'
 end

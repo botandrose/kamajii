@@ -37,6 +37,10 @@ class LoggedExceptionsController < ActionController::Base
     end
   end
   
+  def create
+    @exc = LoggedException.create! params[:exc]
+  end
+  
   def show
     @exc = LoggedException.find params[:id]
     @unfiltered_request = @exc.request
