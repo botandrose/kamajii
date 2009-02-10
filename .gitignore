@@ -1,0 +1,14 @@
+log/*.log
+tmp/**/*
+.DS_Store
+public/cache/**/*
+doc/api
+doc/app
+doc/spec/*
+db/data.*
+db/*.sqlite3
+config/database.yml
+config/deploy.rb
+converage/**/*
+Capfile
+*[~]
