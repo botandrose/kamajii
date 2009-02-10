@@ -6,7 +6,7 @@ window.onerror = function(message, url, line) {
     message: escape(message),
     backtrace: escape(printStackTrace()),
     request: escape(location.pathname+location.search),
-    environment: escape("referrer: "+document.referrer),
+    environment: escape("referrer: "+document.referrer)
   }
   var i = new Image();
   target = 'http://kamajii.botandrose.com/create?'
