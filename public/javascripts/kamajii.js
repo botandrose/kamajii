@@ -4,9 +4,9 @@ window.onerror = function(message, url, line) {
     controller_name: 'javascript',
     action_name: 'javascript',
     message: escape(message),
-    backtrace: escape(printStackTrace()),
-    request: escape(location.pathname+location.search),
-    environment: escape("referrer: "+document.referrer+"\nuser agent: "+navigator.userAgent)
+    backtrace: escape(printStackTrace().join('<br>'),
+    request: escape("* "+location.pathname+location.search),
+    environment: escape("* referrer: "+document.referrer+"\n* user agent: "+navigator.userAgent)
   }
 
   var i = new Image();
