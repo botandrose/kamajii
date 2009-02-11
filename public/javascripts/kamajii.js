@@ -4,8 +4,8 @@ window.onerror = function(message, url, line) {
     controller_name: 'javascript',
     action_name: 'javascript',
     message: escape(message),
-    backtrace: escape(printStackTrace().join('<br>')),
-    request: escape("* "+location.pathname+location.search),
+    backtrace: escape(printStackTrace().join('\n')),
+    request: escape("* host: "+location.hostname+"* path: "+location.pathname+"* querystring: "+location.search),
     environment: escape("* referrer: "+document.referrer+"\n* user agent: "+navigator.userAgent)
   }
 
