@@ -1,11 +1,11 @@
-window.onerror = function(message, url, line) {
+function kamajii(message, url, line) {
   var exc = {
     exception_class: "JavaScript",
     controller_name: 'javascript',
     action_name: 'javascript',
     message: escape(message),
     backtrace: escape(printStackTrace().join('\n')),
-    request: escape("* host: "+location.hostname+"* path: "+location.pathname+"* querystring: "+location.search),
+    request: escape("* host: "+location.hostname+"\n* path: "+location.pathname+"\n* querystring: "+location.search),
     environment: escape("* referrer: "+document.referrer+"\n* user agent: "+navigator.userAgent)
   }
 
@@ -17,15 +17,9 @@ window.onerror = function(message, url, line) {
   i.src = target
   window.onerror = function() { return true; };
   return true;
-/*
-        :exception_class => exception.class.name,
-        :controller_name => controller.controller_path,
-        :action_name     => controller.action_name,
-        :message         => message,
-        :backtrace       => exception.backtrace,
-        :request         => controller.request
-*/
 };
+
+window.onerror = kamajii
 
 function printStackTrace(options) {
   if(options && options.guess) {
@@ -59,10 +53,16 @@ printStackTrace.implementation.prototype = {
   },
   
   firefox: function(e) {
-    return e.stack.replace("^.*?\\n",'').
-      replace(new RegExp("(?:\\n@:0)?\\s+$","m"), '').
-      replace(new RegExp("^\\(","gm"), '{anonymous}(').
-      split("\n");
+    s = e.stack
+    alert(e.stack)
+    s = s.replace("^.*?\\n",'')
+    s = s.replace(new RegExp("(?:\\n@:0)?\\s+$","m"), '')
+    s = s.replace(new RegExp("^\\(","gm"), '{anonymous}(')
+    s = s.replace(/kamajii\("([^"]*)","([^"]*)",([0-9]*)\)@.*$/, "$2:$3")
+    s = s.split("\n")
+    s.shift()
+    s.shift()
+    return s
   },
 
   opera: function(e) {
