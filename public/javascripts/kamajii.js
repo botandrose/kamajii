@@ -6,8 +6,9 @@ window.onerror = function(message, url, line) {
     message: escape(message),
     backtrace: escape(printStackTrace()),
     request: escape(location.pathname+location.search),
-    environment: escape("referrer: "+document.referrer)
+    environment: escape("referrer: "+document.referrer+"\nuser agent: "+navigator.userAgent)
   }
+
   var i = new Image();
   target = 'http://kamajii.botandrose.com/create?'
   for(attr in exc) {
@@ -58,13 +59,14 @@ printStackTrace.implementation.prototype = {
   },
   
   firefox: function(e) {
-    return e.stack.replace(/^.*?\n/,'').
-    replace(/(?:\n@:0)?\s+$/m,'').
-    replace(/^\(/gm,'{anonymous}(').
-    split("\n");
+    return e.stack.replace("^.*?\\n",'').
+      replace(new RegExp("(?:\\n@:0)?\\s+$","m"), '').
+      replace(new RegExp("^\\(","gm"), '{anonymous}(').
+      split("\n");
   },
 
   opera: function(e) {
+    /*
     var lines = e.message.split("\n"),
       ANON = '{anonymous}',
       lineRE = /Line\s+(\d+).*?script\s+(http\S+)(?:.*?in\s+function\s+(\S+))?/i,
@@ -81,17 +83,19 @@ printStackTrace.implementation.prototype = {
 
     lines.splice(j,lines.length-j);
     return lines;
+    */
   },
 
   other: function(curr) {
-    var ANON = "{anonymous}",
-    fnRE  = /function\s*([\w\-$]+)?\s*\(/i,
-    stack = [],j=0,
-    fn,args;
+    var ANON = "{anonymous}"
+    // fnRE  = /function\s*([\w\-$]+)?\s*\(/i
+    var fnRE = new RegExp("function\\s*([\\w\\-$]+)?\\s*\\(", "i")
+    var stack = [],j=0
+    var fn, args
 
     while(curr) {
       fn = fnRE.test(curr.toString()) ? RegExp.$1 || ANON : ANON;
-      args = Array.prototype.slice.call(curr['arguments']);
+      args = Array.prototype.slice(curr['arguments']);
       stack[j++] = fn + '(' + printStackTrace.implementation.prototype.stringifyArguments(args) + ')';
       curr = curr.caller;
     }
@@ -111,8 +115,10 @@ printStackTrace.implementation.prototype = {
 	    }
 	  }
 	  return args.join(',');
-  },
-  
+  }
+
+  /*,
+  // doesnt parse in IE6 
   sourceCache: {},
 
   ajax: function(url) {
@@ -175,4 +181,5 @@ printStackTrace.implementation.prototype = {
 	  }
 	  return "(?)";
   }
+  */
 };
